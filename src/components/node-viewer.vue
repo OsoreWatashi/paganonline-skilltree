@@ -45,23 +45,32 @@ export default class NodeViewer extends Vue {
   .node {
     color: grey;
 
-    & > .active {
+    > .active {
       color: black;
     }
 
-    & > .available, &.root {
+    > .available, &.root {
       &:not(.active) {
         color: blue;
       }
     }
 
-    &.root {
+    > div > span {
       display: flex;
       flex-direction: column;
+      justify-content: center;
+    }
 
-      .node {
-        display: inline-block;
+    &.root {
+      > div {
+        display: flex;
+        flex-direction: row;
       }
+    }
+
+    .node > div {
+      display: flex;
+      flex-direction: row;
     }
   }
 </style>
