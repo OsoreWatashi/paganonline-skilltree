@@ -13,6 +13,7 @@ export interface ISkillTree {
 export interface IViewSkillTree extends ISkillTree {
   level: number;
   totalPointsSpent: number;
+  rootNodes: IViewNode[];
 }
 
 export interface INode {
