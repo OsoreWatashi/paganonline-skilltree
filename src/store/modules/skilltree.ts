@@ -8,7 +8,7 @@ const defaultState: IViewSkillTree = {
     id: 0,
     name: 'Select a character'
   },
-  level: 5,
+  level: 30,
   totalPointsSpent: 0,
   rootNodes: []
 };
