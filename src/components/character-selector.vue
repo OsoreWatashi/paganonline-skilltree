@@ -4,7 +4,7 @@
       <option disabled value="0">Select a character</option>  
       <option v-for="character in characters" :key="character.id" :value="character.id">{{character.name}}</option>
     </select>
-    <span>Level: </span><input type="text" min="1" max="30" placeholder="Level" v-model="level"/>
+    <span>Level: </span><input type="range" :min="totalPointsSpent" max="30" placeholder="Level" v-model="level"/>
     <span>Spent: {{totalPointsSpent}} / {{level}}</span>
   </div>
 </template>
