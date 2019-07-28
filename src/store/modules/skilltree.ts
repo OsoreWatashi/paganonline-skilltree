@@ -1,4 +1,4 @@
-import { Module, ActionTree, ActionContext, MutationTree } from 'vuex';
+import { Module, ActionTree, ActionContext, MutationTree, GetterTree } from 'vuex';
 import { ICharacter, IViewNode, IViewSkillTree } from '@/types';
 import CharacterFactory from '@/model/character-factory';
 import NodeFactory from '@/model/node-factory';
@@ -17,6 +17,12 @@ export default class Store implements Module<IViewSkillTree, any> {
   public namespaced: boolean = true;
 
   public state: IViewSkillTree = defaultState;
+
+  public getters: GetterTree<IViewSkillTree, any> = {
+    pointAvailable(state: IViewSkillTree): boolean {
+      return state.totalPointsSpent < state.level;
+    }
+  };
 
   public actions: ActionTree<IViewSkillTree, any> = {
     selectCharacter(injectee: ActionContext<IViewSkillTree, any>, payload: ICharacter | number): void {
