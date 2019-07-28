@@ -32,7 +32,9 @@ export default class NodeViewer extends Vue {
     if (node.pointsSpent > 0) {
       result.push('active');
     }
-    if (this.$store.getters['SkillTree/pointAvailable'] && node.parent != null && node.parent.pointsSpent > 0) {
+    if (this.$store.getters['SkillTree/pointAvailable'] &&
+        node.parent != null && node.parent.pointsSpent > 0 &&
+        node.levelRequirement <= this.$store.state.SkillTree.level) {
       result.push('available');
     }
 
