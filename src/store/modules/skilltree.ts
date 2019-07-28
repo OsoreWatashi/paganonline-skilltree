@@ -21,6 +21,20 @@ export default class Store implements Module<IViewSkillTree, any> {
   public getters: GetterTree<IViewSkillTree, any> = {
     pointAvailable(state: IViewSkillTree): boolean {
       return state.totalPointsSpent < state.level;
+    },
+    hash(state: IViewSkillTree): string {
+      const selectedNodes: string[] = [];
+      const nodeWalker = (nodes: IViewNode[]) => {
+        for (const node of nodes) {
+          if (node.pointsSpent > 0) {
+            selectedNodes.push(((node.id << 3) + node.pointsSpent).toString(16));
+            nodeWalker(node.children);
+          }
+        }
+      };
+      nodeWalker(state.rootNodes);
+      const hash = selectedNodes.join('');
+      return hash;
     }
   };
 
