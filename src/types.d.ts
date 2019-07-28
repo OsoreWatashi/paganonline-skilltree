@@ -20,6 +20,7 @@ export interface INode {
   levelRequirement: number;
   minimumPoints: number;
   maximumPoints: number;
+  iconName: string;
 
   children?: INode[]
 }

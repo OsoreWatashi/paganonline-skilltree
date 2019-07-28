@@ -69,6 +69,7 @@ export default class NodeFactory {
       const viewNode: IViewNode = {
         pointsSpent: node.minimumPoints,
         parent: parent != null ? parent : null,
+        iconName: node.iconName,
         children: [],
 
         name: node.name,
