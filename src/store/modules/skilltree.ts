@@ -64,7 +64,7 @@ export default class Store implements Module<IViewSkillTree, any> {
           return;
         }
 
-        if (payload.node.parent != null && payload.node.parent.pointsSpent! < 1) {
+        if (payload.node.parent != null && payload.node.parent.pointsSpent < 1) {
           injectee.dispatch('spendPoints', { node: payload.node.parent, amount: 1 });
           injectee.dispatch('spendPoints', { node: payload.node, amount: payload.amount });
           return;
@@ -109,7 +109,7 @@ export default class Store implements Module<IViewSkillTree, any> {
     },
     spendPoints(state: IViewSkillTree, payload: { node: IViewNode, amount: number }): void {
       state.totalPointsSpent += payload.amount;
-      payload.node.pointsSpent! += payload.amount;
+      payload.node.pointsSpent += payload.amount;
     }
   };
 }

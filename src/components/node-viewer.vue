@@ -29,10 +29,10 @@ export default class NodeViewer extends Vue {
   private states(node: IViewNode): string {
     const result: string[] = [];
 
-    if (node.pointsSpent! > 0) {
+    if (node.pointsSpent > 0) {
       result.push('active');
     }
-    if (node.parent != null && node.parent.pointsSpent! > 0) {
+    if (node.parent != null && node.parent.pointsSpent > 0) {
       result.push('available');
     }
 
