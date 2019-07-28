@@ -6,7 +6,7 @@
     </select>
     <span>Level: </span><input type="range" :min="totalPointsSpent" max="30" placeholder="Level" v-model="level"/>
     <span>Spent: {{totalPointsSpent}} / {{level}}</span>
-    <span>Hash: {{hash}}</span>
+    <label>Hash:</label><input type="text" v-model="hash" style="width:600px"/>
   </div>
 </template>
 
@@ -18,8 +18,7 @@ import { mapState, mapGetters } from 'vuex';
 
 @Component({
   computed: {
-    ...mapState('SkillTree', ['level', 'totalPointsSpent']),
-    ...mapGetters('SkillTree', ['hash'])
+    ...mapState('SkillTree', ['level', 'totalPointsSpent'])
   }
 })
 export default class CharacterSelector extends Vue {
@@ -39,6 +38,13 @@ export default class CharacterSelector extends Vue {
 
   get characters(): ICharacter[] {
     return CharacterFactory.getAvailableCharacters();
+  }
+
+  get hash(): string {
+    return this.$store.getters['SkillTree/hash'];
+  }
+  set hash(value: string) {
+
   }
 }
 </script>
