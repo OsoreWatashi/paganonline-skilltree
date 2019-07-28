@@ -27,7 +27,7 @@ export default class Store implements Module<IViewSkillTree, any> {
       const nodeWalker = (nodes: IViewNode[]) => {
         for (const node of nodes) {
           if (node.pointsSpent > 0) {
-            selectedNodes.push(((node.id << 3) + node.pointsSpent).toString(16));
+            selectedNodes.push(((node.id << 2) + node.pointsSpent).toString(16).padStart(3, '0'));
             nodeWalker(node.children);
           }
         }
