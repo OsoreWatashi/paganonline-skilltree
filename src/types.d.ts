@@ -26,6 +26,7 @@ export interface INode {
 }
 
 export interface IViewNode extends INode {
+  id: number;
   pointsSpent: number;
   parent: IViewNode | null;
   children: IViewNode[];

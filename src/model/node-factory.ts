@@ -31,7 +31,7 @@ export default class NodeFactory {
   private static getAnyaNodes(): IViewNode[] {
     const nodes = NodesAnya;
     const result = this.convertToViewNodes(nodes);
-    return result;
+    return result.nodes;
   }
 
   private static getDameerNodes(): IViewNode[] {
@@ -62,11 +62,16 @@ export default class NodeFactory {
     return [];
   }
 
-  private static convertToViewNodes(nodes: INode[], parent?: IViewNode): IViewNode[] {
+  private static convertToViewNodes(nodes: INode[], id?: number, parent?: IViewNode): { nodes: IViewNode[], lastId: number } {
+    if (id == null) {
+      id = 0;
+    }
+
     const result: IViewNode[] = new Array(nodes.length);
     for (let index = 0, length = nodes.length; index < length; ++index) {
       const node = nodes[index];
       const viewNode: IViewNode = {
+        id: ++id,
         pointsSpent: node.minimumPoints,
         parent: parent != null ? parent : null,
         iconName: node.iconName,
@@ -78,11 +83,13 @@ export default class NodeFactory {
         maximumPoints: node.maximumPoints
       };
       if (node.children != null) {
-        viewNode.children = this.convertToViewNodes(node.children, viewNode);
+        const nestedResult = this.convertToViewNodes(node.children, id, viewNode);
+        viewNode.children = nestedResult.nodes;
+        id = nestedResult.lastId;
       }
       result[index] = viewNode;
     }
 
-    return result;
+    return { nodes: result, lastId: id };
   }
 }
