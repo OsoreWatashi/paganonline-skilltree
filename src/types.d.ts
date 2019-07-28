@@ -7,20 +7,25 @@ export interface ICharacter {
 
 export interface ISkillTree {
   character: ICharacter;
-  level: number;
-  totalPointsSpent: number;
   rootNodes: INode[];
 }
 
+export interface IViewSkillTree extends ISkillTree {
+  level: number;
+  totalPointsSpent: number;
+}
+
 export interface INode {
-  id: number;
-  parentid?: number;
   name: string;
   levelRequirement: number;
   minimumPoints: number;
   maximumPoints: number;
 
-  pointsSpent?: number;
-  parent?: INode;
-  children?: INode[];
+  children?: INode[]
+}
+
+export interface IViewNode extends INode {
+  pointsSpent: number;
+  parent: IViewNode | null;
+  children: IViewNode[];
 }

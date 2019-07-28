@@ -12,7 +12,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
-import { INode } from '@/types';
+import { IViewNode } from '@/types';
 import NodeFactory from '@/model/node-factory';
 
 @Component({
@@ -24,9 +24,9 @@ import NodeFactory from '@/model/node-factory';
 })
 export default class NodeViewer extends Vue {
   @Prop()
-  private parentNode?: INode;
+  private parentNode?: IViewNode;
 
-  private states(node: INode): string {
+  private states(node: IViewNode): string {
     const result: string[] = [];
 
     if (node.pointsSpent! > 0) {
