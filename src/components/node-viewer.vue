@@ -33,7 +33,7 @@ export default class NodeViewer extends Vue {
       result.push('active');
     }
     if (this.$store.getters['SkillTree/pointAvailable'] &&
-        node.parent != null && node.parent.pointsSpent > 0 &&
+        (node.parent == null || node.parent.pointsSpent > 0) &&
         node.levelRequirement <= this.$store.state.SkillTree.level) {
       result.push('available');
     }
@@ -51,10 +51,8 @@ export default class NodeViewer extends Vue {
       color: black;
     }
 
-    > .available, &.root {
-      &:not(.active) {
-        color: blue;
-      }
+    > .available:not(.active) {
+      color: blue;
     }
 
     > div > span {
