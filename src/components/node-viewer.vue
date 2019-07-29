@@ -27,6 +27,7 @@ import { IViewNode } from '@/types';
 import NodeFactory from '@/model/node-factory';
 
 @Component({
+  name: 'node-viewer',
   computed: {
     ...mapState('SkillTree', ['character', 'rootNodes'])
   }, methods: {

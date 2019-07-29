@@ -17,6 +17,7 @@ import CharacterFactory from '@/model/character-factory';
 import { mapState, mapGetters } from 'vuex';
 
 @Component({
+  name: 'character-selector',
   computed: {
     ...mapState('SkillTree', ['level', 'totalPointsSpent'])
   }
