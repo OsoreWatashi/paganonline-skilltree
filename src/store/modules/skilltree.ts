@@ -111,6 +111,28 @@ export default class Store implements Module<IViewSkillTree, any> {
       if (payload.amount !== 0) {
         injectee.commit('spendPoints', payload);
       }
+    },
+    hashUpdated(injectee: ActionContext<IViewSkillTree, any>, payload: string) {
+      if (payload.length % 3 !== 0) {
+        return;
+      }
+
+      const parts = payload.match(/.{3}/g);
+      const selectedNodes = parts!.map((x) => {
+        const value = parseInt(x, 16);
+        return { id: value >> 2, pointsSpent: value && 3 };
+      });
+
+      const nodeWalker = (nodes: IViewNode[]) => {
+        for (const node of nodes) {
+          const selectedNode = selectedNodes.find((x) => x.id === node.id);
+          if (selectedNode != null) {
+            injectee.dispatch('spendPoints', { node, amount: selectedNode.pointsSpent });
+            nodeWalker(node.children);
+          }
+        }
+      };
+      nodeWalker(injectee.state.rootNodes);
     }
   };
 

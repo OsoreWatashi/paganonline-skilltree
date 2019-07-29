@@ -44,7 +44,7 @@ export default class CharacterSelector extends Vue {
     return this.$store.getters['SkillTree/hash'];
   }
   set hash(value: string) {
-
+    this.$store.dispatch('SkillTree/hashUpdated', value);
   }
 }
 </script>
