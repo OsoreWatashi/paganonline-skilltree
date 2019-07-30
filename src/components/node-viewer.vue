@@ -1,9 +1,10 @@
 <template>
   <div class="node" :class="parentNode == null ? 'root' : ''">
     <div v-for="child in (parentNode != null ? parentNode.children : rootNodes)" :key="child.id" :class="states(child)">
-      <div class="content">
+      <div class="content" @mouseenter="showTooltip(true, $event)" @mouseleave="showTooltip(false, $event)">
         <span v-if="child.maximumPoints > 1" class="points-spent">{{child.pointsSpent}}</span>
         <img :src="nodeIcon(child)" @click="spendPoints(child, 1, $event)" @contextmenu="spendPoints(child, -1, $event)" />
+        <div class="tooltip">Tooltip for {{child.name}}</div>
       </div>
       <node-viewer v-if="child.children != null && child.children.length > 0" :parentNode="child" />
     </div>
@@ -59,6 +60,14 @@ export default class NodeViewer extends Vue {
     return result.join(' ');
   }
 
+  private showTooltip(show: boolean, event: Event): void {
+    if (show) {
+      (event.target as Element).classList.add('show-tooltip');
+    } else {
+      (event.target as Element).classList.remove('show-tooltip');
+    }
+  }
+
   private spendPoints(node: IViewNode, amount: number, event: Event): boolean {
     this.$store.dispatch('SkillTree/spendPoints', {node, amount});
     event.preventDefault();
@@ -110,6 +119,13 @@ export default class NodeViewer extends Vue {
 
     img {
       align-self: center;
+    }
+
+    .tooltip {
+      display: none;
+    }
+    &.show-tooltip .tooltip {
+      display: inline;
     }
   }
 
