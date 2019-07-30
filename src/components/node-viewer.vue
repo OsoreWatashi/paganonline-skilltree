@@ -4,7 +4,7 @@
       <div class="content" @mouseenter="showTooltip(true, $event)" @mouseleave="showTooltip(false, $event)">
         <span v-if="child.maximumPoints > 1" class="points-spent">{{child.pointsSpent}}</span>
         <img :src="nodeIcon(child)" @click="spendPoints(child, 1, $event)" @contextmenu="spendPoints(child, -1, $event)" />
-        <div class="tooltip">Tooltip for {{child.name}}</div>
+        <div class="tooltip">{{child.name}}</div>
       </div>
       <node-viewer v-if="child.children != null && child.children.length > 0" :parentNode="child" />
     </div>
@@ -123,6 +123,14 @@ export default class NodeViewer extends Vue {
 
     .tooltip {
       display: none;
+
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: black;
+      color: gold;
+      width: 250px;
+      z-index: 2;
     }
     &.show-tooltip .tooltip {
       display: inline;
