@@ -1,20 +1,7 @@
 <template>
   <div class="node" :class="parentNode == null ? 'root' : ''">
-    <div
-      v-for="child in (parentNode != null ? parentNode.children : rootNodes)"
-      :key="child.id"
-      :class="states(child)"
-    >
-      <img :src="nodeIcon(child)" />
-      <span>{{child.name}} lvl{{child.levelRequirement}} - {{child.pointsSpent || 0}}/{{child.maximumPoints}}</span>
-      <button
-        :disabled="child.pointsSpent <= child.minimumPoints"
-        @click="spendPoints({node: child, amount: -1})"
-      >-</button>
-      <button
-        :disabled="child.pointsSpent >= child.maximumPoints"
-        @click="spendPoints({node: child, amount: 1})"
-      >+</button>
+    <div v-for="child in (parentNode != null ? parentNode.children : rootNodes)" :key="child.id" :class="states(child)">
+      <img :src="nodeIcon(child)" @click="spendPoints(child, 1, $event)" @contextmenu="spendPoints(child, -1, $event)" />
       <node-viewer v-if="child.children != null && child.children.length > 0" :parentNode="child" />
     </div>
   </div>
@@ -30,8 +17,6 @@ import NodeFactory from '@/model/node-factory';
   name: 'node-viewer',
   computed: {
     ...mapState('SkillTree', ['character', 'rootNodes'])
-  }, methods: {
-    ...mapActions('SkillTree', ['spendPoints'])
   }
 })
 export default class NodeViewer extends Vue {
@@ -69,6 +54,12 @@ export default class NodeViewer extends Vue {
     }
 
     return result.join(' ');
+  }
+
+  private spendPoints(node: IViewNode, amount: number, event: Event): boolean {
+    this.$store.dispatch('SkillTree/spendPoints', {node, amount});
+    event.preventDefault();
+    return false;
   }
 }
 </script>
