@@ -1,7 +1,10 @@
 <template>
   <div class="node" :class="parentNode == null ? 'root' : ''">
     <div v-for="child in (parentNode != null ? parentNode.children : rootNodes)" :key="child.id" :class="states(child)">
-      <img :src="nodeIcon(child)" @click="spendPoints(child, 1, $event)" @contextmenu="spendPoints(child, -1, $event)" />
+      <div class="content">
+        <span v-if="child.maximumPoints > 1" class="points-spent">{{child.pointsSpent}}</span>
+        <img :src="nodeIcon(child)" @click="spendPoints(child, 1, $event)" @contextmenu="spendPoints(child, -1, $event)" />
+      </div>
       <node-viewer v-if="child.children != null && child.children.length > 0" :parentNode="child" />
     </div>
   </div>
@@ -76,16 +79,6 @@ export default class NodeViewer extends Vue {
     color: blue;
   }
 
-  > div > img {
-    align-self: center;
-  }
-
-  > div > span {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
   &.root {
     > div {
       display: flex;
@@ -93,7 +86,34 @@ export default class NodeViewer extends Vue {
     }
   }
 
-  .node > div {
+  div > div.content {
+    align-self: center;
+    position: relative;
+
+    .points-spent {
+      color: gold;
+      font-size: 24px;
+      line-height: 1.5em;
+      background: black;
+      border: 2px solid gold;
+      border-radius: 50%;
+
+      display: inline-block;
+      width: 1.5em;
+      height: 1.5em;
+      text-align: center;
+
+      position: absolute;
+      top: calc(1.5em / -2);
+      left: calc(1.5em / -2);
+    }
+
+    img {
+      align-self: center;
+    }
+  }
+
+  .node > div:not(.content) {
     display: flex;
     flex-direction: row;
   }
