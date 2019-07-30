@@ -1,20 +1,11 @@
 <template>
   <div class="node" :class="parentNode == null ? 'root' : ''">
-    <div
-      v-for="child in (parentNode != null ? parentNode.children : rootNodes)"
-      :key="child.id"
-      :class="states(child)"
-    >
-      <img :src="nodeIcon(child)" />
-      <span>{{child.name}} lvl{{child.levelRequirement}} - {{child.pointsSpent || 0}}/{{child.maximumPoints}}</span>
-      <button
-        :disabled="child.pointsSpent <= child.minimumPoints"
-        @click="spendPoints({node: child, amount: -1})"
-      >-</button>
-      <button
-        :disabled="child.pointsSpent >= child.maximumPoints"
-        @click="spendPoints({node: child, amount: 1})"
-      >+</button>
+    <div v-for="child in (parentNode != null ? parentNode.children : rootNodes)" :key="child.id" :class="states(child)">
+      <div class="content" @mouseenter="showTooltip(true, $event)" @mouseleave="showTooltip(false, $event)">
+        <span v-if="child.maximumPoints > 1" class="points-spent">{{child.pointsSpent}}</span>
+        <img :src="nodeIcon(child)" @click="spendPoints(child, 1, $event)" @contextmenu="spendPoints(child, -1, $event)" />
+        <div class="tooltip">{{child.name}}</div>
+      </div>
       <node-viewer v-if="child.children != null && child.children.length > 0" :parentNode="child" />
     </div>
   </div>
@@ -30,8 +21,6 @@ import NodeFactory from '@/model/node-factory';
   name: 'node-viewer',
   computed: {
     ...mapState('SkillTree', ['character', 'rootNodes'])
-  }, methods: {
-    ...mapActions('SkillTree', ['spendPoints'])
   }
 })
 export default class NodeViewer extends Vue {
@@ -70,6 +59,20 @@ export default class NodeViewer extends Vue {
 
     return result.join(' ');
   }
+
+  private showTooltip(show: boolean, event: Event): void {
+    if (show) {
+      (event.target as Element).classList.add('show-tooltip');
+    } else {
+      (event.target as Element).classList.remove('show-tooltip');
+    }
+  }
+
+  private spendPoints(node: IViewNode, amount: number, event: Event): boolean {
+    this.$store.dispatch('SkillTree/spendPoints', {node, amount});
+    event.preventDefault();
+    return false;
+  }
 }
 </script>
 
@@ -85,16 +88,6 @@ export default class NodeViewer extends Vue {
     color: blue;
   }
 
-  > div > img {
-    align-self: center;
-  }
-
-  > div > span {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
   &.root {
     > div {
       display: flex;
@@ -102,7 +95,49 @@ export default class NodeViewer extends Vue {
     }
   }
 
-  .node > div {
+  div > div.content {
+    align-self: center;
+    position: relative;
+
+    .points-spent {
+      color: gold;
+      font-size: 24px;
+      line-height: 1.5em;
+      background: black;
+      border: 2px solid gold;
+      border-radius: 50%;
+
+      display: inline-block;
+      width: 1.5em;
+      height: 1.5em;
+      text-align: center;
+
+      position: absolute;
+      top: calc(1.5em / -2);
+      left: calc(1.5em / -2);
+    }
+
+    img {
+      align-self: center;
+    }
+
+    .tooltip {
+      display: none;
+
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      background: black;
+      color: gold;
+      width: 250px;
+      z-index: 2;
+    }
+    &.show-tooltip .tooltip {
+      display: inline;
+    }
+  }
+
+  .node > div:not(.content) {
     display: flex;
     flex-direction: row;
   }
