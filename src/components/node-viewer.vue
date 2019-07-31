@@ -4,7 +4,7 @@
       <div class="content" @mouseenter="showTooltip(true, $event)" @mouseleave="showTooltip(false, $event)">
         <span v-if="child.maximumPoints > 1" class="points-spent">{{child.pointsSpent}}</span>
         <img :src="nodeIcon(child)" @click="spendPoints(child, 1, $event)" @contextmenu="spendPoints(child, -1, $event)" />
-        <div class="tooltip">{{child.name}}</div>
+        <tooltip class="tooltip" :node="child"/>
       </div>
       <node-viewer v-if="child.children != null && child.children.length > 0" :parentNode="child" />
     </div>
@@ -16,9 +16,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { mapState, mapActions } from 'vuex';
 import { IViewNode } from '@/types';
 import NodeFactory from '@/model/node-factory';
+import Tooltip from './tooltip.vue';
 
 @Component({
   name: 'node-viewer',
+  components: {
+    Tooltip
+  },
   computed: {
     ...mapState('SkillTree', ['character', 'rootNodes'])
   }
@@ -122,18 +126,13 @@ export default class NodeViewer extends Vue {
     }
 
     .tooltip {
-      display: none;
-
       position: absolute;
-      top: 25px;
-      left: 25px;
-      background: black;
-      color: gold;
-      width: 250px;
+      top: 10px;
+      left: calc(100% + 10px);
       z-index: 2;
     }
-    &.show-tooltip .tooltip {
-      display: inline;
+    &:not(.show-tooltip) > .tooltip {
+      display: none;
     }
   }
 
