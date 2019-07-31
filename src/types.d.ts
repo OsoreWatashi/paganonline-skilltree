@@ -22,7 +22,9 @@ export interface INode {
   minimumPoints: number;
   maximumPoints: number;
   iconName: string;
+  description: string;
 
+  effects?: string[];
   children?: INode[]
 }
 

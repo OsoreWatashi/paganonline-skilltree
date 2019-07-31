@@ -75,6 +75,8 @@ export default class NodeFactory {
         pointsSpent: node.minimumPoints,
         parent: parent != null ? parent : null,
         iconName: node.iconName,
+        description: node.description,
+        effects: node.effects || [],
         children: [],
 
         name: node.name,
