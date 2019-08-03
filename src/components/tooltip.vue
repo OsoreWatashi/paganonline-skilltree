@@ -3,7 +3,7 @@
     <span class="title">{{node.name}}</span>
     <span class="description">{{node.description}}</span>
     <div v-if="node.effects.length > 0" class="effects">
-      <span v-for="effect in node.effects" :key="1">{{effect}}</span>
+      <span v-for="effect in node.effects">{{effect}}</span>
     </div>
   </div>
 </template>
